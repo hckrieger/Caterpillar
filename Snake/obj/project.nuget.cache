@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "+8V2QLSnCpN6Na+rIpdlnvzPA1ptWdtZRE6EkRwSpqBK5WQk5ERMOYjPJl2SDT6NROdSpsOuA7yIyW3UPsM6yA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\hunte\\source\\repos\\MonoGame\\games\\Snake\\Snake\\Snake.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\hunte\\.nuget\\packages\\monogame.content.builder.task\\3.8.0.1641\\monogame.content.builder.task.3.8.0.1641.nupkg.sha512",
+    "C:\\Users\\hunte\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.0.1641\\monogame.framework.desktopgl.3.8.0.1641.nupkg.sha512"
+  ],
+  "logs": []
+}

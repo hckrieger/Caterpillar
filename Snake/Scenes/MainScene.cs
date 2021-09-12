@@ -17,8 +17,6 @@ namespace Snake.Scenes
 
         GoalPiece goalPiece;
 
-        bool start = true;
-
         int xPos = 3;
         int yPos = 3;
 
@@ -37,10 +35,10 @@ namespace Snake.Scenes
             None,
         }
 
-        float moveCount = .325f;
+        float moveCount = .3f;
         float startCount;
 
-        Direction currentDirection;
+        Direction currentDirection, impendingDirection;
         State currentState;
 
         Snake player;
@@ -76,8 +74,8 @@ namespace Snake.Scenes
                 }
             }
 
-            xPos = 1;
-            yPos = 1;
+            xPos = 10;
+            yPos = 10;
 
 
             headOfSnake = new SnakeSection();
@@ -90,7 +88,7 @@ namespace Snake.Scenes
 
             startCount = moveCount;
 
-            currentDirection = Direction.None;
+            impendingDirection = Direction.None;
 
             
 
@@ -107,20 +105,15 @@ namespace Snake.Scenes
         {
             base.Update(gameTime);
 
-
-
-
-            
-
-
-
             for (int i = 0; i < player.SnakeSections.Count - 1; i++)
             {
-                //player.SnakeSections[i].Active = false;
-                if (i == 0)
-                    player.SnakeSections[i].LocalPosition = grid[xPos, yPos].LocalPosition;
-                else
-                    player.SnakeSections[i].LocalPosition = player.SnakeSections[i - 1].PreviousPosition;
+                if (currentState == State.Playing)
+                {
+                    if (i == 0)
+                        player.SnakeSections[i].LocalPosition = grid[xPos, yPos].LocalPosition;
+                    else
+                        player.SnakeSections[i].LocalPosition = player.SnakeSections[i - 1].PreviousPosition;
+                }
 
             }
 
@@ -128,41 +121,47 @@ namespace Snake.Scenes
 
             moveCount -= dt;
 
-
-
             if (moveCount <= 0)
             {
                 foreach (SnakeSection obj in player.SnakeSections)
                     obj.PreviousPosition = obj.CurrentPosition;
-                
 
-                switch (currentDirection)
+                switch (impendingDirection)
                 {
                     case Direction.None:
                         xPos += 0; yPos += 0;
                         break;
                     case Direction.Up:
-                        if (yPos != 0) 
-                            yPos--; 
-                        else 
+                        if (yPos != 0)
+                        {
+                            yPos--;
+                            currentDirection = Direction.Up;
+                        } else 
                             currentState = State.GameOver;
                         break;
                     case Direction.Right:
                         if (xPos != ROWS - 1)
-                            xPos++; 
-                        else 
+                        {
+                            xPos++;
+                            currentDirection = Direction.Right;
+                        } else 
                             currentState = State.GameOver;
                         break;
                     case Direction.Down:
                         if (yPos != COLS - 1)
+                        {
                             yPos++;
+                            currentDirection = Direction.Down;
+                        }
                         else 
                             currentState = State.GameOver;
                         break;
                     case Direction.Left:
                         if (xPos != 0)
+                        {
                             xPos--;
-                        else
+                            currentDirection = Direction.Left;
+                        } else
                             currentState = State.GameOver;
                         break;
                     default:
@@ -175,39 +174,29 @@ namespace Snake.Scenes
                     obj.CurrentPosition = obj.LocalPosition;
 
 
+                if (headOfSnake.CurrentPosition == goalPiece.LocalPosition)
+                {
+                    SnakeSection addSnake = new SnakeSection();
+
+                    addSnake.LocalPosition = player.SnakeSections[player.SnakeSections.Count - 1].PreviousPosition;
+                    player.SnakeSections.Add(addSnake);
+
+                }
+
                 if (currentState == State.GameOver)
                 {
                     ExtendedGame.BackgroundColor = Color.Red;
                 }
 
 
-
-                if (headOfSnake.CurrentPosition == goalPiece.LocalPosition)
-                {
-                    SnakeSection addSnake = new SnakeSection();
-                   
-                    addSnake.LocalPosition = player.SnakeSections[player.SnakeSections.Count - 1].PreviousPosition;
-                    player.SnakeSections.Add(addSnake);
-                    
-                }
-
-
-
                 moveCount = startCount;
             }
-
-
-
-
-
 
         }
 
         public override void HandleInput(InputHelper inputHelper)
         {
-            //base.HandleInput(inputHelper);
-
-
+            base.HandleInput(inputHelper);
 
             KeySelect(Keys.Up, Direction.Down, Direction.Up);
             KeySelect(Keys.Right, Direction.Left, Direction.Right);
@@ -217,20 +206,10 @@ namespace Snake.Scenes
 
             void KeySelect(Keys keyDown, Direction wrongDirection, Direction desiredDirection)
             {
-                
-             
                 if (inputHelper.KeyPressed(keyDown) && currentDirection != wrongDirection)
-                {
-    
-                    currentDirection = desiredDirection;
-                }
-                    
+                    impendingDirection = desiredDirection;
             }
             
         }
-
-
-
-
     }
 }

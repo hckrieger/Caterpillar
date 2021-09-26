@@ -10,7 +10,7 @@ namespace Snake
     {
         float count = .35f;
         float startCount;
-        public GoalPiece() : base("Blocks@3x1", 1f, 2)
+        public GoalPiece() : base("Blocks@3x1", .6f, 2)
         {
             startCount = count;
         }

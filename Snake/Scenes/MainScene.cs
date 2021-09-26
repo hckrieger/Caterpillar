@@ -42,21 +42,24 @@ namespace Snake.Scenes
         State currentState;
 
         Snake player;
-        SnakeSection headOfSnake;
+        SnakeSection headOfSnake, tailOfSnake;
+
+        List<Vector2> availableBlocks;
+        TextGameObject debugCount;
+
+        
 
         public MainScene()
         {
-            
-
             goalPiece = new GoalPiece();
             gameObjects.AddChild(goalPiece);
 
             player = new Snake();
             gameObjects.AddChild(player);
 
-            
-
             grid = new BlockSpace[ROWS, COLS];
+
+            availableBlocks = new List<Vector2>();
 
             for (int x = 0; x < ROWS; x++)
             {
@@ -71,60 +74,69 @@ namespace Snake.Scenes
 
                     grid[x, y].LocalPosition = new Vector2(x * 32, y * 32);
                     gameObjects.AddChild(grid[x, y]);
+
+                    availableBlocks.Add(grid[x, y].LocalPosition);
                 }
             }
 
-            xPos = 10;
-            yPos = 10;
+            xPos = 1;
+            yPos = 1;
 
-
-            headOfSnake = new SnakeSection();
+            
+            
+            player.SnakeSections.Add(new SnakeSection());
+            headOfSnake = player.SnakeSections[0];
             headOfSnake.LocalPosition = grid[xPos, yPos].LocalPosition;
-            player.SnakeSections.Add(headOfSnake);
 
-            SnakeSection addSnake = new SnakeSection();
-            addSnake.LocalPosition = new Vector2(-100, -100);
-            player.SnakeSections.Add(addSnake);
+            headOfSnake.PreviousPosition = headOfSnake.CurrentPosition;
+
 
             startCount = moveCount;
 
             impendingDirection = Direction.None;
+            currentDirection = Direction.None;
 
-            
 
-            RandomPlacement();
-            
-        }
+            goalPiece.LocalPosition = grid[4, 4].LocalPosition;
 
-        void RandomPlacement()
-        {
-            goalPiece.LocalPosition = grid[ExtendedGame.Random.Next(17), ExtendedGame.Random.Next(15)].LocalPosition;
+            debugCount = new TextGameObject("debug", 1f, Color.White);
+            debugCount.LocalPosition = new Vector2(100, 700);
+            gameObjects.AddChild(debugCount);
+
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
-            for (int i = 0; i < player.SnakeSections.Count - 1; i++)
-            {
-                if (currentState == State.Playing)
-                {
-                    if (i == 0)
-                        player.SnakeSections[i].LocalPosition = grid[xPos, yPos].LocalPosition;
-                    else
-                        player.SnakeSections[i].LocalPosition = player.SnakeSections[i - 1].PreviousPosition;
-                }
+            debugCount.Text = availableBlocks.Count.ToString();
 
+            headOfSnake.LocalPosition = grid[xPos, yPos].LocalPosition;
+            tailOfSnake = player.SnakeSections[player.SnakeSections.Count - 1];
+
+
+
+            for (int i = 1; i < player.SnakeSections.Count; i++)
+            {
+                player.SnakeSections[i].LocalPosition = player.SnakeSections[i - 1].PreviousPosition;
+                if (headOfSnake.LocalPosition == player.SnakeSections[i].LocalPosition)
+                {
+                    currentState = State.GameOver;
+                }
             }
 
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            moveCount -= dt;
+            if (currentState != State.GameOver)
+                moveCount -= dt;
 
             if (moveCount <= 0)
             {
+
                 foreach (SnakeSection obj in player.SnakeSections)
                     obj.PreviousPosition = obj.CurrentPosition;
+
+
 
                 switch (impendingDirection)
                 {
@@ -136,7 +148,8 @@ namespace Snake.Scenes
                         {
                             yPos--;
                             currentDirection = Direction.Up;
-                        } else 
+                        }
+                        else
                             currentState = State.GameOver;
                         break;
                     case Direction.Right:
@@ -144,7 +157,8 @@ namespace Snake.Scenes
                         {
                             xPos++;
                             currentDirection = Direction.Right;
-                        } else 
+                        }
+                        else
                             currentState = State.GameOver;
                         break;
                     case Direction.Down:
@@ -153,7 +167,7 @@ namespace Snake.Scenes
                             yPos++;
                             currentDirection = Direction.Down;
                         }
-                        else 
+                        else
                             currentState = State.GameOver;
                         break;
                     case Direction.Left:
@@ -161,35 +175,50 @@ namespace Snake.Scenes
                         {
                             xPos--;
                             currentDirection = Direction.Left;
-                        } else
+                        }
+                        else
                             currentState = State.GameOver;
                         break;
                     default:
                         xPos += 0; yPos += 0;
                         break;
                 }
-                
+
+
 
                 foreach (SnakeSection obj in player.SnakeSections)
                     obj.CurrentPosition = obj.LocalPosition;
 
 
-                if (headOfSnake.CurrentPosition == goalPiece.LocalPosition)
-                {
-                    SnakeSection addSnake = new SnakeSection();
+                availableBlocks.Remove(headOfSnake.CurrentPosition);
+                availableBlocks.Add(tailOfSnake.PreviousPosition);
 
-                    addSnake.LocalPosition = player.SnakeSections[player.SnakeSections.Count - 1].PreviousPosition;
-                    player.SnakeSections.Add(addSnake);
+
+                if (currentState != State.GameOver)
+                {
+
+                    if (headOfSnake.CurrentPosition == goalPiece.LocalPosition)
+                    {
+
+                        SnakeSection addSnake = new SnakeSection();
+                        addSnake.LocalPosition = tailOfSnake.PreviousPosition;
+                        player.SnakeSections.Add(addSnake);
+                        availableBlocks.Remove(tailOfSnake.CurrentPosition);
+                        goalPiece.LocalPosition = availableBlocks[ExtendedGame.Random.Next(availableBlocks.Count - 1)];
+
+                    }
 
                 }
 
-                if (currentState == State.GameOver)
-                {
-                    ExtendedGame.BackgroundColor = Color.Red;
-                }
 
+                    
 
                 moveCount = startCount;
+            }
+
+            if (currentState == State.GameOver)
+            {
+                ExtendedGame.BackgroundColor = Color.Red;
             }
 
         }
@@ -198,16 +227,16 @@ namespace Snake.Scenes
         {
             base.HandleInput(inputHelper);
 
+            KeySelect(Keys.Down, Direction.Up, Direction.Down);
             KeySelect(Keys.Up, Direction.Down, Direction.Up);
             KeySelect(Keys.Right, Direction.Left, Direction.Right);
-            KeySelect(Keys.Down, Direction.Up, Direction.Down);
             KeySelect(Keys.Left, Direction.Right, Direction.Left);
             KeySelect(Keys.Space, Direction.None, Direction.None);
 
-            void KeySelect(Keys keyDown, Direction wrongDirection, Direction desiredDirection)
+            void KeySelect(Keys keyDown, Direction wrongDirection, Direction impendingDirection)
             {
                 if (inputHelper.KeyPressed(keyDown) && currentDirection != wrongDirection)
-                    impendingDirection = desiredDirection;
+                    this.impendingDirection = impendingDirection;
             }
             
         }

@@ -24,7 +24,7 @@ namespace Snake
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            for (int i = 0; i < snakeSections.Count - 1; i++)
+            for (int i = 0; i < snakeSections.Count; i++)
             {
                 snakeSections[i].debugText.LocalPosition = snakeSections[i].CurrentPosition + new Vector2(16, 8);
                 snakeSections[i].debugText.Text = $"{i}";

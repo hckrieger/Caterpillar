@@ -1,3 +1,7 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
 "C:/Users/hunte/source/repos/MonoGame/games/Snake/Snake/Content/Blocks@3x1.png","C:/Users/hunte/source/repos/MonoGame/games/Snake/Snake/Content/bin/DesktopGL/Blocks@3x1.xnb","TextureProcessor","Texture2DContent",184,12373,0.2430648
 "C:/Users/hunte/source/repos/MonoGame/games/Snake/Snake/Content/debug.spritefont","C:/Users/hunte/source/repos/MonoGame/games/Snake/Snake/Content/bin/DesktopGL/debug.xnb","FontDescriptionProcessor","SpriteFontContent",2008,21521,0.1855702
+"C:/Users/hunte/source/repos/MonoGame/games/Snake/Snake/Content/pressSpace.spritefont","C:/Users/hunte/source/repos/MonoGame/games/Snake/Snake/Content/bin/DesktopGL/pressSpace.xnb","FontDescriptionProcessor","SpriteFontContent",2010,21521,0.2243977
+"C:/Users/hunte/source/repos/MonoGame/games/Snake/Snake/Content/programmedBy.spritefont","C:/Users/hunte/source/repos/MonoGame/games/Snake/Snake/Content/bin/DesktopGL/programmedBy.xnb","FontDescriptionProcessor","SpriteFontContent",2008,21521,0.0239368
+"C:/Users/hunte/source/repos/MonoGame/games/Snake/Snake/Content/SnakeCircles@4x3.png","C:/Users/hunte/source/repos/MonoGame/games/Snake/Snake/Content/bin/DesktopGL/SnakeCircles@4x3.xnb","TextureProcessor","Texture2DContent",1903,49237,0.1009135
+"C:/Users/hunte/source/repos/MonoGame/games/Snake/Snake/Content/title.spritefont","C:/Users/hunte/source/repos/MonoGame/games/Snake/Snake/Content/bin/DesktopGL/title.xnb","FontDescriptionProcessor","SpriteFontContent",2008,70673,0.0402367

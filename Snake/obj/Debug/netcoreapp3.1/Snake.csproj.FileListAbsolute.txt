@@ -52,6 +52,12 @@ C:\Users\hunte\source\repos\MonoGame\games\Snake\Snake\bin\Debug\netcoreapp3.1\r
 C:\Users\hunte\source\repos\MonoGame\games\Snake\Snake\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\soft_oal.dll
 C:\Users\hunte\source\repos\MonoGame\games\Snake\Snake\bin\Debug\netcoreapp3.1\Engine.dll
 C:\Users\hunte\source\repos\MonoGame\games\Snake\Snake\bin\Debug\netcoreapp3.1\Engine.pdb
-C:\Users\hunte\source\repos\MonoGame\games\Snake\Snake\obj\Debug\netcoreapp3.1\Snake.csproj.CopyComplete
 C:\Users\hunte\source\repos\MonoGame\games\Snake\Snake\obj\Debug\netcoreapp3.1\Snake.genruntimeconfig.cache
 C:\Users\hunte\source\repos\MonoGame\games\Snake\Snake\bin\Debug\netcoreapp3.1\Content\debug.xnb
+C:\Users\hunte\source\repos\MonoGame\games\Snake\Snake\bin\Debug\netcoreapp3.1\Content\SnakeSheet@7x2.xnb
+C:\Users\hunte\source\repos\MonoGame\games\Snake\Snake\bin\Debug\netcoreapp3.1\Content\SnakeCircles@4x3.xnb
+C:\Users\hunte\source\repos\MonoGame\games\Snake\Snake\bin\Debug\netcoreapp3.1\Content\Title.xnb
+C:\Users\hunte\source\repos\MonoGame\games\Snake\Snake\bin\Debug\netcoreapp3.1\Content\pressSpace.xnb
+C:\Users\hunte\source\repos\MonoGame\games\Snake\Snake\bin\Debug\netcoreapp3.1\Content\programmedBy.xnb
+C:\Users\hunte\source\repos\MonoGame\games\Snake\Snake\bin\Debug\netcoreapp3.1\Content\instruction.xnb
+C:\Users\hunte\source\repos\MonoGame\games\Snake\Snake\bin\Debug\netcoreapp3.1\Content\score.xnb

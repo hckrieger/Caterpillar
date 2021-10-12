@@ -74,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     },
@@ -82,7 +82,12 @@
       "restore": {
         "projectUniqueName": "C:\\Users\\hunte\\source\\repos\\MonoGame\\libraries\\Engine\\Engine.csproj",
         "projectName": "Engine",
-        "projectPath": "C:\\Users\\hunte\\source\\repos\\MonoGame\\libraries\\Engine\\Engine.csproj"
+        "projectPath": "C:\\Users\\hunte\\source\\repos\\MonoGame\\libraries\\Engine\\Engine.csproj",
+        "frameworks": {
+          "net45": {
+            "projectReferences": {}
+          }
+        }
       },
       "frameworks": {
         "net45": {}

@@ -8,9 +8,9 @@ namespace Snake
 {
     class GoalPiece : SpriteGameObject
     {
-        float count = .35f;
+        float count = .25f;
         float startCount;
-        public GoalPiece() : base("Blocks@3x1", .6f, 2)
+        public GoalPiece() : base("SnakeCircles@4x3", .6f, 4)
         {
             startCount = count;
         }

@@ -22,7 +22,7 @@ namespace Snake.Scenes
 
         enum State
         {
-            Pregame,
+            GetReady,
             Playing,
             GameOver,
             Win
@@ -57,21 +57,23 @@ namespace Snake.Scenes
 
         public GameObjectList PlayingField { get { return playingField; } }
 
-        TextGameObject score = new TextGameObject("debug", 1f, Color.White);
+        TextGameObject score = new TextGameObject("score", 1f, Color.Green);
+        TextGameObject message = new TextGameObject("message", 1f, Color.Green);
         
 
         public MainScene()
         {
-            score.LocalPosition = new Vector2(20, 20);
+            score.LocalPosition = new Vector2(200, 37);
             gameObjects.AddChild(score);
+
+            message.LocalPosition = new Vector2(20, 20);
+            gameObjects.AddChild(message);
 
             playingField.LocalPosition = new Vector2(0, 100);
 
             grid = new BlockSpace[ROWS, COLS];
 
             availableBlocks = new List<Vector2>();
-
-            
 
             goalPiece = new GoalPiece();
             playingField.AddChild(goalPiece);
@@ -97,8 +99,7 @@ namespace Snake.Scenes
             impendingDirection = Direction.None;
             currentDirection = Direction.None;
 
-            goalPiece.SheetIndex = ExtendedGame.Random.Next(4, 12);
-            goalPiece.LocalPosition = availableBlocks[ExtendedGame.Random.Next(availableBlocks.Count)];
+
 
             gameObjects.AddChild(playingField);
 
@@ -108,7 +109,8 @@ namespace Snake.Scenes
         {
             base.Update(gameTime);
 
-            score.Text = ((ROWS * COLS) - availableBlocks.Count).ToString();
+            Message();
+            Score((ROWS * COLS) - availableBlocks.Count);
 
             if (availableBlocks.Count == 1)
             {
@@ -241,7 +243,13 @@ namespace Snake.Scenes
             void KeySelect(Keys keyDown, Direction wrongDirection, Direction impendingDirection)
             {
                 if (inputHelper.KeyPressed(keyDown) && currentDirection != wrongDirection)
+                {
                     this.impendingDirection = impendingDirection;
+
+                    if (currentState == State.GetReady && keyDown != Keys.Left)
+                        currentState = State.Playing;
+                }
+                    
             }
 
             if (currentState == State.GameOver)
@@ -249,29 +257,25 @@ namespace Snake.Scenes
                 if (inputHelper.KeyPressed(Keys.Space))
                     Reset();
             }
-
-            
-            
         }
 
         public override void Reset()
         {
             base.Reset();
 
-            availableBlocks.Clear();
 
-            score.Text = 0.ToString();
 
-            
+            Score(0);
 
-            foreach (SnakeSection obj in player.SnakeSections)
+            if (currentState == State.GameOver)
             {
-                playingField.RemoveChild(obj);
+                availableBlocks.Clear();
+
+                foreach (SnakeSection obj in player.SnakeSections)
+                    playingField.RemoveChild(obj);
+
+                player.SnakeSections.RemoveAll(m => m != player.SnakeSections[0]);
             }
-            
-
-
-            player.SnakeSections.RemoveAll(m => m != player.SnakeSections[0]);
 
             xPos = 2;
             yPos = 4;
@@ -295,7 +299,43 @@ namespace Snake.Scenes
 
             }
 
-            currentState = State.Playing;
+            goalPiece.SheetIndex = ExtendedGame.Random.Next(4, 12);
+            goalPiece.LocalPosition = availableBlocks[ExtendedGame.Random.Next(availableBlocks.Count)];
+
+            currentDirection = Direction.Right;
+            currentState = State.GetReady;
+        }
+
+
+        public string Score(int score)
+        {
+            this.score.Text = $"Score: {score}";
+            return this.score.Text;
+        }
+
+        public void Message()
+        {
+            switch(currentState)
+            {
+                case State.GetReady:
+                    message.Text = "Instructions:\n" +
+                        "-Move with arrow keys\n" +
+                        "-Eat the blinking ball\n" +
+                        "-Don't run into the wall or yourself";
+                    break;
+                case State.Playing:
+                    message.Text = "Go!";
+                    break;
+                case State.GameOver:
+                    message.Text = "Game Over!\n Press Space to play again";
+                    break;
+                case State.Win:
+                    message.Text = "Wow! You won! Great Job!\n Play again?";
+                    break;
+                default:
+                    message.Text = "Welcome to Caterpillar";
+                    break;
+            }
         }
     }
 }

@@ -32,12 +32,12 @@
 /processorParam:TextureFormat=Compressed
 /build:debug.spritefont
 
-#begin instruction.spritefont
+#begin message.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:instruction.spritefont
+/build:message.spritefont
 
 #begin pressSpace.spritefont
 /importer:FontDescriptionImporter

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/hunte/source/repos/MonoGame/games/Snake/Snake/Content/title.spritefont</SourceFile>
-  <SourceTime>2021-10-12T16:35:47.0672795-04:00</SourceTime>
-  <DestFile>C:/Users/hunte/source/repos/MonoGame/games/Snake/Snake/Content/bin/DesktopGL/title.xnb</DestFile>
-  <DestTime>2021-10-13T18:41:19.1087422-04:00</DestTime>
+  <SourceFile>C:/Users/hunte/source/repos/MonoGame/games/Snake/Snake/Content/score.spritefont</SourceFile>
+  <SourceTime>2021-10-13T18:28:10.0473673-04:00</SourceTime>
+  <DestFile>C:/Users/hunte/source/repos/MonoGame/games/Snake/Snake/Content/bin/DesktopGL/score.xnb</DestFile>
+  <DestTime>2021-10-13T18:41:19.0560334-04:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2018-12-08T11:35:54-05:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

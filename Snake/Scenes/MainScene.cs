@@ -37,7 +37,7 @@ namespace Snake.Scenes
             None,
         }
 
-        float moveCount = .35f;
+        float moveCount = .375f;
         float startCount;
 
         Direction currentDirection, impendingDirection;
@@ -66,7 +66,7 @@ namespace Snake.Scenes
             score.LocalPosition = new Vector2(200, 37);
             gameObjects.AddChild(score);
 
-            message.LocalPosition = new Vector2(20, 20);
+            
             gameObjects.AddChild(message);
 
             playingField.LocalPosition = new Vector2(0, 100);
@@ -99,10 +99,52 @@ namespace Snake.Scenes
             impendingDirection = Direction.None;
             currentDirection = Direction.None;
 
-
-
             gameObjects.AddChild(playingField);
+        }
 
+        public override void Reset() //Values that are reset everytime the player starts a new game
+        {
+            base.Reset();
+
+            Score(0);
+
+            if (currentState == State.GameOver)
+            {
+                availableBlocks.Clear();
+
+                foreach (SnakeSection obj in player.SnakeSections)
+                    playingField.RemoveChild(obj);
+
+                player.SnakeSections.RemoveAll(m => m != player.SnakeSections[0]);
+            }
+
+            xPos = 2;
+            yPos = 4;
+
+            for (int x = 0; x < ROWS; x++)
+            {
+                for (int y = 0; y < COLS; y++)
+                {
+                    grid[x, y] = new BlockSpace(new Point(x, y));
+
+                    if ((x + y) % 2 == 0)
+                        grid[x, y].SheetIndex = 0;
+                    else
+                        grid[x, y].SheetIndex = 1;
+
+                    grid[x, y].LocalPosition = new Vector2(x * 32, y * 32);
+                    playingField.AddChild(grid[x, y]);
+
+                    availableBlocks.Add(grid[x, y].LocalPosition);
+                }
+
+            }
+
+            goalPiece.SheetIndex = ExtendedGame.Random.Next(4, 12);
+            goalPiece.LocalPosition = availableBlocks[ExtendedGame.Random.Next(availableBlocks.Count)];
+
+            currentDirection = Direction.Right;
+            currentState = State.GetReady;
         }
 
         public override void Update(GameTime gameTime)
@@ -238,7 +280,7 @@ namespace Snake.Scenes
             KeySelect(Keys.Up, Direction.Down, Direction.Up);
             KeySelect(Keys.Right, Direction.Left, Direction.Right);
             KeySelect(Keys.Left, Direction.Right, Direction.Left);
-            //KeySelect(Keys.Space, Direction.None, Direction.None);
+            KeySelect(Keys.Space, Direction.None, Direction.None);
 
             void KeySelect(Keys keyDown, Direction wrongDirection, Direction impendingDirection)
             {
@@ -259,53 +301,6 @@ namespace Snake.Scenes
             }
         }
 
-        public override void Reset()
-        {
-            base.Reset();
-
-
-
-            Score(0);
-
-            if (currentState == State.GameOver)
-            {
-                availableBlocks.Clear();
-
-                foreach (SnakeSection obj in player.SnakeSections)
-                    playingField.RemoveChild(obj);
-
-                player.SnakeSections.RemoveAll(m => m != player.SnakeSections[0]);
-            }
-
-            xPos = 2;
-            yPos = 4;
-
-            for (int x = 0; x < ROWS; x++)
-            {
-                for (int y = 0; y < COLS; y++)
-                {
-                    grid[x, y] = new BlockSpace(new Point(x, y));
-
-                    if ((x + y) % 2 == 0)
-                        grid[x, y].SheetIndex = 0;
-                    else
-                        grid[x, y].SheetIndex = 1;
-
-                    grid[x, y].LocalPosition = new Vector2(x * 32, y * 32);
-                    playingField.AddChild(grid[x, y]);
-
-                    availableBlocks.Add(grid[x, y].LocalPosition);
-                }
-
-            }
-
-            goalPiece.SheetIndex = ExtendedGame.Random.Next(4, 12);
-            goalPiece.LocalPosition = availableBlocks[ExtendedGame.Random.Next(availableBlocks.Count)];
-
-            currentDirection = Direction.Right;
-            currentState = State.GetReady;
-        }
-
 
         public string Score(int score)
         {
@@ -321,16 +316,22 @@ namespace Snake.Scenes
                     message.Text = "Instructions:\n" +
                         "-Move with arrow keys\n" +
                         "-Eat the blinking ball\n" +
-                        "-Don't run into the wall or yourself";
+                        "-Don't run into the wall\n" +
+                        "-Don't run into yourself";
+
+                    message.LocalPosition = new Vector2(5, 0);
                     break;
                 case State.Playing:
                     message.Text = "Go!";
+                    message.LocalPosition = new Vector2(65, 40);
                     break;
                 case State.GameOver:
-                    message.Text = "Game Over!\n Press Space to play again";
+                    message.Text = "Game Over!\nPlay again? \nPress Space";
+                    message.LocalPosition = new Vector2(30, 20);
                     break;
                 case State.Win:
                     message.Text = "Wow! You won! Great Job!\n Play again?";
+                    message.LocalPosition = new Vector2(20, 30);
                     break;
                 default:
                     message.Text = "Welcome to Caterpillar";

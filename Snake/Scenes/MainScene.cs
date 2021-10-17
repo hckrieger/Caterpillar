@@ -280,7 +280,7 @@ namespace Snake.Scenes
             KeySelect(Keys.Up, Direction.Down, Direction.Up);
             KeySelect(Keys.Right, Direction.Left, Direction.Right);
             KeySelect(Keys.Left, Direction.Right, Direction.Left);
-            KeySelect(Keys.Space, Direction.None, Direction.None);
+            //KeySelect(Keys.Space, Direction.None, Direction.None);
 
             void KeySelect(Keys keyDown, Direction wrongDirection, Direction impendingDirection)
             {

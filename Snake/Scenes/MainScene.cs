@@ -106,9 +106,9 @@ namespace Snake.Scenes
         {
             base.Reset();
 
-            Score(0);
+            
 
-            if (currentState == State.GameOver)
+            if (currentState == State.GameOver || currentState == State.Win)
             {
                 availableBlocks.Clear();
 
@@ -116,6 +116,8 @@ namespace Snake.Scenes
                     playingField.RemoveChild(obj);
 
                 player.SnakeSections.RemoveAll(m => m != player.SnakeSections[0]);
+
+                Score(0);
             }
 
             xPos = 2;
@@ -151,14 +153,16 @@ namespace Snake.Scenes
         {
             base.Update(gameTime);
 
-            Message();
+            
             Score((ROWS * COLS) - availableBlocks.Count);
 
             if (availableBlocks.Count == 1)
             {
-                score.Text = (ROWS * COLS).ToString();
+                Score(ROWS * COLS);
                 currentState = State.Win;
             }
+
+            Message();
 
             headOfSnake.LocalPosition = grid[xPos, yPos].LocalPosition;
             tailOfSnake = player.SnakeSections[player.SnakeSections.Count - 1];
@@ -173,12 +177,6 @@ namespace Snake.Scenes
                         currentState = State.GameOver;
                 }
 
-            }
-
-
-            if (currentState == State.Win)
-            {
-                ExtendedGame.BackgroundColor = Color.Green;
             }
 
 
@@ -291,21 +289,22 @@ namespace Snake.Scenes
                     if (currentState == State.GetReady && keyDown != Keys.Left)
                         currentState = State.Playing;
                 }
-                    
+
             }
 
-            if (currentState == State.GameOver)
+            if (currentState == State.GameOver || currentState == State.Win)
             {
+                
                 if (inputHelper.KeyPressed(Keys.Space))
                     Reset();
             }
         }
 
 
-        public string Score(int score)
+        public string Score(int currentScore)
         {
-            this.score.Text = $"Score: {score}";
-            return this.score.Text;
+            score.Text = $"Score: {currentScore}";
+            return score.Text;
         }
 
         public void Message()
@@ -330,8 +329,8 @@ namespace Snake.Scenes
                     message.LocalPosition = new Vector2(30, 20);
                     break;
                 case State.Win:
-                    message.Text = "Wow! You won! Great Job!\n Play again?";
-                    message.LocalPosition = new Vector2(20, 30);
+                    message.Text = "Wow! You won!\nGreat Job!\nPlay again?\nPress Space";
+                    message.LocalPosition = new Vector2(30, 10);
                     break;
                 default:
                     message.Text = "Welcome to Caterpillar";
